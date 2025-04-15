@@ -64,6 +64,13 @@
   </url>
 
   
+  <url>
+    <loc>http://example.com/tags/notebook/</loc>
+    <lastmod>2025-04-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
 
   
 </urlset>
