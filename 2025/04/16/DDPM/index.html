@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="变量定义$ x $为数据，即图像$ x_t $为该图像在t时刻（状态）的图像$ \epsilon\simN(0,1) $ 高斯噪声，即在标准高斯分布下进行的随机采样 前向过程图像不断加入噪声的过程:$$x_t &#x3D; \sqrt{\beta_t} \times \epsilon_t + \sqrt{1-\beta_t} \times x_{t-1}$$显然，这样一个迭代过程是从 $x_0$">
+  <meta name="description" content="变量定义$ x $为数据，即图像$ x_t $为该图像在t时刻（状态）的图像$ \epsilon~\sim~N(0,1) $ 高斯噪声，即在标准高斯分布下进行的随机采样 前向过程图像不断加入噪声的过程: x_t &#x3D; \sqrt{\beta_t} \times \epsilon_t + \sqrt{1-\beta_t} \times x_{t-1}显然，这样一个迭代过程是从 $x_0$ 出发的，也就">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DDPM">
 <meta property="og:url" content="http://example.com/2025/04/16/DDPM/index.html">
 <meta property="og:site_name" content="小象的知识库">
-<meta property="og:description" content="变量定义$ x $为数据，即图像$ x_t $为该图像在t时刻（状态）的图像$ \epsilon\simN(0,1) $ 高斯噪声，即在标准高斯分布下进行的随机采样 前向过程图像不断加入噪声的过程:$$x_t &#x3D; \sqrt{\beta_t} \times \epsilon_t + \sqrt{1-\beta_t} \times x_{t-1}$$显然，这样一个迭代过程是从 $x_0$">
+<meta property="og:description" content="变量定义$ x $为数据，即图像$ x_t $为该图像在t时刻（状态）的图像$ \epsilon~\sim~N(0,1) $ 高斯噪声，即在标准高斯分布下进行的随机采样 前向过程图像不断加入噪声的过程: x_t &#x3D; \sqrt{\beta_t} \times \epsilon_t + \sqrt{1-\beta_t} \times x_{t-1}显然，这样一个迭代过程是从 $x_0$ 出发的，也就">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-04-15T16:20:45.000Z">
-<meta property="article:modified_time" content="2025-04-21T07:59:08.028Z">
+<meta property="article:modified_time" content="2025-04-21T08:16:04.811Z">
 <meta property="article:author" content="B.W. Xiang">
 <meta property="article:tag" content="notebook">
 <meta name="twitter:card" content="summary">
@@ -209,7 +209,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-04-21 15:59:08" itemprop="dateModified" datetime="2025-04-21T15:59:08+08:00">2025-04-21</time>
+                <time title="修改时间：2025-04-21 16:16:04" itemprop="dateModified" datetime="2025-04-21T16:16:04+08:00">2025-04-21</time>
               </span>
 
           
@@ -223,10 +223,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="变量定义"><a href="#变量定义" class="headerlink" title="变量定义"></a>变量定义</h1><p>$ x $为数据，即图像<br>$ x_t $为该图像在t时刻（状态）的图像<br>$ \epsilon<del>\sim</del>N(0,1) $ 高斯噪声，即在标准高斯分布下进行的随机采样</p>
-<h1 id="前向过程"><a href="#前向过程" class="headerlink" title="前向过程"></a>前向过程</h1><p>图像不断加入噪声的过程:<br>$$x_t &#x3D; \sqrt{\beta_t} \times \epsilon_t + \sqrt{1-\beta_t} \times x_{t-1}$$<br>显然，这样一个迭代过程是从 $x_0$ 出发的，也就是说任意状态下的图片 $ x_t $ 都可以由 $x_0$ 产生<br>设<br>$$ \alpha_t &#x3D; 1-\beta_t<br>$$<br>$$\overline{\alpha_t}&#x3D;\prod^t_{i&#x3D;1}\alpha_i$$<br>由此化简为<br>$$x_t&#x3D;\sqrt{1-\overline{\alpha_t}}\times\epsilon+\sqrt{\overline{\alpha_t}}\times x_0$$<br>同时可得一些恒等变换：<br>	$\epsilon &#x3D; \frac{x_t-\sqrt{\overline{\alpha_t}}x_0}{\sqrt{1-\overline{\alpha}<em>t}}$<br>	$x_0 &#x3D; \frac{1}{\sqrt{\overline{\alpha}<em>t}}(x_t-\sqrt{1-\overline{\alpha}<em>t}\times \epsilon)$<br>	<br>先验：<br>$$p</em>{\theta}(x</em>{t-1}|x_t)&#x3D;N(x</em>{t-1};\mu_{\theta}(x_t,t),\Sigma_{\theta}(x_t,t))<br>$$<br>后验：<br>$$q(x_t|x_0)&#x3D;N(x_t;\sqrt{\overline{\alpha_t}}~x_0,(1-\overline{\alpha_t})I)$$<br>随机变量$x_t$遵从这样的高斯分布。</p>
-<h1 id="反向过程"><a href="#反向过程" class="headerlink" title="反向过程"></a>反向过程</h1><p>图像去噪生成的过程：<br>后验：<br>$$q(x_{t-1}|x_t,x_0)&#x3D;\frac{q(x_{t}|x_{t-1},x_0)q(x_{t-1}|x_0)}{q(x_t|x_0)}$$<br>根据贝叶斯定理可以得出上式，等式右侧均为高斯分布，由此可根据高斯分布表达式代入，得出解析函数，根据计算得<br>$$q(x_{t-1}|x_t,x_0)\sim N(\frac{\sqrt(1-\overline{\alpha_{t-1}})}{1-\overline{\alpha_{t}}}x_t+\frac{\sqrt{\overline{\alpha_{t-1}}}(1-{\alpha_t})}{1-\overline{\alpha_t}}\times \frac{x_t-\sqrt{1-\overline{\alpha}<em>t}\times \epsilon}{\sqrt {\overline{\alpha}<em>t}}<del>,</del>(\sqrt{\frac{\beta_t(1-\overline{\alpha}</em>{t-1})}{1-\overline{\alpha}<em>t}})^2)$$<br> 其中q的均值为：<br>$$\widetilde{\mu}<em>t(x_t,x_0) &#x3D; \frac{\sqrt(1-\overline{\alpha</em>{t-1}})}{1-\overline{\alpha</em>{t}}}x_t+\frac{\sqrt{\overline{\alpha</em>{t-1}}}\beta_t}{1-\overline{\alpha_t}}x_0$$<br>训练时让模型去预测噪声$\epsilon$，记作$\epsilon_{\theta}(x_t,t)$<br>将$x_0$代入后，也就得到了前面$q$的高斯分布中的等式，即<br>$$\mu_{\theta}(x_t,x_0) &#x3D; \frac{1}{\sqrt{\alpha_t}}(x_t-\frac{1-\alpha_t}{\sqrt{1-\overline{\alpha}<em>t}}\times \epsilon</em>{\theta}(x_t,t))$$<br>但这样我们只的到了一个确定的$\mu_{\theta}$，而本身这个过程是一个推算概率分布的过程，它具有不确定性，因此需要在高斯分布中再次采样，以保持采样过程的随机性，以生成不同的样本。</p>
-<h4 id="重参数化"><a href="#重参数化" class="headerlink" title="重参数化"></a>重参数化</h4><p>现在我们指导反向过程还是高斯分布，我们便利用这个均值做一个标准正态采样<br>$$x_{t-1} &#x3D; \mu_{\theta}(x_t,t)+\sigma_tz~,~~~~z\sim N(0,1)$$<br>因此整合之后便得到了<br>$$x_{t-1} &#x3D; \frac{1}{\sqrt{\alpha_t}}(x_t-\frac{1-\alpha_t}{\sqrt{1-\overline{\alpha}<em>t}}\times \epsilon</em>{\theta}(x_t,t))+\sigma_{t}z$$<br>其中$\sigma_t&#x3D;\widetilde{\beta}_t$ .</p>
+        <h1 id="变量定义"><a href="#变量定义" class="headerlink" title="变量定义"></a>变量定义</h1><p>$ x $为数据，即图像<br>$ x_t $为该图像在t时刻（状态）的图像<br>$ \epsilon~\sim~N(0,1) $ 高斯噪声，即在标准高斯分布下进行的随机采样</p>
+<h1 id="前向过程"><a href="#前向过程" class="headerlink" title="前向过程"></a>前向过程</h1><p>图像不断加入噪声的过程:</p>
+<script type="math/tex; mode=display">x_t = \sqrt{\beta_t} \times \epsilon_t + \sqrt{1-\beta_t} \times x_{t-1}</script><p>显然，这样一个迭代过程是从 $x_0$ 出发的，也就是说任意状态下的图片 $ x_t $ 都可以由 $x_0$ 产生<br>设</p>
+<script type="math/tex; mode=display">\alpha_t = 1-\beta_t</script><script type="math/tex; mode=display">\overline{\alpha_t}=\prod^t_{i=1}\alpha_i</script><p>由此化简为</p>
+<script type="math/tex; mode=display">x_t=\sqrt{1-\overline{\alpha_t}}\times\epsilon+\sqrt{\overline{\alpha_t}}\times x_0</script><p>同时可得一些恒等变换：<br>    $\epsilon = \frac{x_t-\sqrt{\overline{\alpha_t}}x_0}{\sqrt{1-\overline{\alpha}_t}}$<br>    $x_0 = \frac{1}{\sqrt{\overline{\alpha}_t}}(x_t-\sqrt{1-\overline{\alpha}_t}\times \epsilon)$</p>
+<p>先验：</p>
+<script type="math/tex; mode=display">p_{\theta}(x_{t-1}|x_t)=N(x_{t-1};\mu_{\theta}(x_t,t),\Sigma_{\theta}(x_t,t))</script><p>后验：</p>
+<script type="math/tex; mode=display">q(x_t|x_0)=N(x_t;\sqrt{\overline{\alpha_t}}~x_0,(1-\overline{\alpha_t})I)</script><p>随机变量$x_t$遵从这样的高斯分布。</p>
+<h1 id="反向过程"><a href="#反向过程" class="headerlink" title="反向过程"></a>反向过程</h1><p>图像去噪生成的过程：<br>后验：</p>
+<script type="math/tex; mode=display">q(x_{t-1}|x_t,x_0)=\frac{q(x_{t}|x_{t-1},x_0)q(x_{t-1}|x_0)}{q(x_t|x_0)}</script><p>根据贝叶斯定理可以得出上式，等式右侧均为高斯分布，由此可根据高斯分布表达式代入，得出解析函数，根据计算得</p>
+<script type="math/tex; mode=display">q(x_{t-1}|x_t,x_0)\sim N(\frac{\sqrt(1-\overline{\alpha_{t-1}})}{1-\overline{\alpha_{t}}}x_t+\frac{\sqrt{\overline{\alpha_{t-1}}}(1-{\alpha_t})}{1-\overline{\alpha_t}}\times \frac{x_t-\sqrt{1-\overline{\alpha}_t}\times \epsilon}{\sqrt {\overline{\alpha}_t}}~,~(\sqrt{\frac{\beta_t(1-\overline{\alpha}_{t-1})}{1-\overline{\alpha}_t}})^2)</script><p> 其中q的均值为：</p>
+<script type="math/tex; mode=display">\widetilde{\mu}_t(x_t,x_0) = \frac{\sqrt(1-\overline{\alpha_{t-1}})}{1-\overline{\alpha_{t}}}x_t+\frac{\sqrt{\overline{\alpha_{t-1}}}\beta_t}{1-\overline{\alpha_t}}x_0</script><p>训练时让模型去预测噪声$\epsilon$，记作$\epsilon_{\theta}(x_t,t)$<br>将$x_0$代入后，也就得到了前面$q$的高斯分布中的等式，即</p>
+<script type="math/tex; mode=display">\mu_{\theta}(x_t,x_0) = \frac{1}{\sqrt{\alpha_t}}(x_t-\frac{1-\alpha_t}{\sqrt{1-\overline{\alpha}_t}}\times \epsilon_{\theta}(x_t,t))</script><p>但这样我们只的到了一个确定的$\mu_{\theta}$，而本身这个过程是一个推算概率分布的过程，它具有不确定性，因此需要在高斯分布中再次采样，以保持采样过程的随机性，以生成不同的样本。</p>
+<h4 id="重参数化"><a href="#重参数化" class="headerlink" title="重参数化"></a>重参数化</h4><p>现在我们指导反向过程还是高斯分布，我们便利用这个均值做一个标准正态采样</p>
+<script type="math/tex; mode=display">x_{t-1} = \mu_{\theta}(x_t,t)+\sigma_tz~,~~~~z\sim N(0,1)</script><p>因此整合之后便得到了</p>
+<script type="math/tex; mode=display">x_{t-1} = \frac{1}{\sqrt{\alpha_t}}(x_t-\frac{1-\alpha_t}{\sqrt{1-\overline{\alpha}_t}}\times \epsilon_{\theta}(x_t,t))+\sigma_{t}z</script><p>其中$\sigma_t=\widetilde{\beta}_t$ .</p>
 
     </div>
 
@@ -445,6 +457,61 @@
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
